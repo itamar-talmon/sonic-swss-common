@@ -5,6 +5,7 @@
 namespace swss {
 #endif
 
+
 /***** DATABASE *****/
 
 #define APPL_DB         0
