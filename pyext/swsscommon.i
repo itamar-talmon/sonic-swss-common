@@ -21,6 +21,7 @@
 #include "selectable.h"
 #include "rediscommand.h"
 #include "table.h"
+#include "countertable.h"
 #include "redispipeline.h"
 #include "redisselect.h"
 #include "redistran.h"
@@ -49,11 +50,13 @@
 
 %template(FieldValuePair) std::pair<std::string, std::string>;
 %template(FieldValuePairs) std::vector<std::pair<std::string, std::string>>;
+%template(FieldValuePairsList) std::vector<std::vector<std::pair<std::string, std::string>>>;
 %template(FieldValueMap) std::map<std::string, std::string>;
 %template(VectorString) std::vector<std::string>;
 %template(ScanResult) std::pair<int64_t, std::vector<std::string>>;
 %template(GetTableResult) std::map<std::string, std::map<std::string, std::string>>;
 %template(GetConfigResult) std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>;
+%template(GetInstanceListResult) std::map<std::string, swss::RedisInstInfo>;
 
 %exception {
     try
@@ -80,15 +83,6 @@
         SWIG_exception(SWIG_UnknownError, "unknown exception");
     }
 }
-
-%template(FieldValuePair) std::pair<std::string, std::string>;
-%template(FieldValuePairs) std::vector<std::pair<std::string, std::string>>;
-%template(FieldValuePairsList) std::vector<std::vector<std::pair<std::string, std::string>>>;
-%template(FieldValueMap) std::map<std::string, std::string>;
-%template(VectorString) std::vector<std::string>;
-%template(ScanResult) std::pair<int64_t, std::vector<std::string>>;
-%template(GetTableResult) std::map<std::string, std::map<std::string, std::string>>;
-%template(GetConfigResult) std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>;
 
 %typemap(out) std::shared_ptr<std::string> %{
     {
@@ -176,6 +170,17 @@ T castSelectableObj(swss::Selectable *temp)
 %clear std::vector<std::vector<std::pair<std::string, std::string>>> &fvss;
 %clear std::vector<std::pair<std::string, std::string>> &values;
 %clear std::string &value;
+
+%feature("director") Counter;
+%apply std::vector<std::pair<std::string, std::string>>& OUTPUT {std::vector<std::pair<std::string, std::string>> &values};
+%apply std::string& OUTPUT {std::string &value};
+%include "luatable.h"
+%include "countertable.h"
+%template(CounterKeyPair) std::pair<int, std::string>;
+%template(KeyStringCache) swss::KeyCache<std::string>;
+%template(KeyPairCache) swss::KeyCache<swss::Counter::KeyPair>;
+%clear std::string &value;
+%clear std::vector<std::pair<std::string, std::string>> &values;
 
 %include "producertable.h"
 %include "producerstatetable.h"

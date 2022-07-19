@@ -7,7 +7,7 @@ EXTRA_DIST = \
     consumer_table_pops.lua \
     producer_state_table_apply_view.lua \
     table_dump.lua \
-    redis_multi.lua \
+    portcounter.lua \
     fdb_flush.lua \
     fdb_flush.v2.lua
 
@@ -65,6 +65,8 @@ libswsscommon_la_SOURCES = \
     subscriberstatetable.cpp  \
     timestamp.cpp             \
     warm_restart.cpp          \
+    luatable.cpp              \
+    countertable.cpp          \
     redisutility.cpp
 
 libswsscommon_la_CXXFLAGS = $(DBGFLAGS) $(AM_CFLAGS) $(CFLAGS_COMMON) $(LIBNL_CFLAGS) $(CODE_COVERAGE_CXXFLAGS)
